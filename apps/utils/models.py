@@ -18,7 +18,3 @@ class BaseModel(TimeStampedModel):
             self.uuid = str(uuid.uuid4()).upper()[:8]
 
         return super().save(*args, **kwargs)
-
-
-
-
