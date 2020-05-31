@@ -7,7 +7,7 @@ from model_utils.models import TimeStampedModel
 class BaseModel(TimeStampedModel):
     created_by = models.CharField(max_length=255, null=True, blank=True)
     modified_by = models.CharField(max_length=255, null=True, blank=True)
-    uuid = models.CharField(max_length=255, primary_key=True)
+    uuid = models.CharField(max_length=255, primary_key=True, editable=False)
 
     class Meta:
         abstract = True
