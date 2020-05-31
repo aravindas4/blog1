@@ -1,7 +1,7 @@
-import uuid
-
 from django.db import models
 from model_utils.models import TimeStampedModel
+
+from .utils import get_uuid
 
 
 class BaseModel(TimeStampedModel):
@@ -15,6 +15,6 @@ class BaseModel(TimeStampedModel):
     def save(self, *args, **kwargs):
 
         if not self.pk:
-            self.uuid = str(uuid.uuid4()).upper()[:8]
+            self.uuid = get_uuid()
 
         return super().save(*args, **kwargs)

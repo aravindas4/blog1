@@ -1,8 +1,10 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
+from apps.utils import utils
 from apps.utils.models import BaseModel
 
 
@@ -29,6 +31,10 @@ class Post(BaseModel):
         return self.title
 
     def save(self, *args, **kwargs):
+
+        if not self.pk:
+            self.slug = f'{slugify(self.title)}-{utils.get_uuid()}'
+
         if not self.publish and self.status in [self.StatusChoice.PUBLISHED]:
             self.publish = timezone.now()
 
