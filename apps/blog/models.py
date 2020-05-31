@@ -1,20 +1,35 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 
+from apps.utils.models import BaseModel
 
-class Post(models.Model):
+
+class Post(BaseModel):
+
+    class StatusChoice(models.IntegerChoices):
+        DRAFT = 0, _('Draft')
+        PUBLISHED = 1, _('Published')
 
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique_for_date='publish')
+    slug = models.SlugField(max_length=255, unique=True)
     author = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name='blog_posts')
     body = models.TextField()
-    publish = models.DateTimeField(default=timezone.now)
+    publish = models.DateTimeField(null=True, blank=True)
+    status = models.PositiveSmallIntegerField(
+        choices=StatusChoice.choices, default=StatusChoice.DRAFT)
 
     class Meta:
         ordering = ('-publish',)
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.publish and self.status in [self.StatusChoice.PUBLISHED]:
+            self.publish = timezone.now()
+
+        return super().save(*args, **kwargs)
