@@ -13,21 +13,26 @@ BASE_FIELDS = (
 
 class CWNModelSerializer(FlexFieldsSerializerMixin, WritableNestedModelSerializer):
 
-    def common(self, validated_data):
-
+    def create(self, validated_data):
         request = self.context.get('request', None)
+
         if request:
             validated_data['created_by'] = request.user.username
         else:
             validated_data['created_by'] = 'Auto'
 
-        return validated_data
-
-    def create(self, validated_data):
-        return super().create(self.common(validated_data))
+        return super().create(validated_data)
 
     def update(self, instance, validated_data):
-        return super().update(instance, self.common(validated_data))
+
+        request = self.context.get('request', None)
+
+        if request:
+            validated_data['modified_by'] = request.user.username
+        else:
+            validated_data['modified_by'] = 'Auto'
+
+        return super().update(instance, validated_data)
 
 
 class ChoicesField(serializers.Field):
