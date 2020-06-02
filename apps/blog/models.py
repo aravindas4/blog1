@@ -8,6 +8,12 @@ from apps.utils import utils
 from apps.utils.models import BaseModel
 
 
+class PostQueryset(models.QuerySet):
+
+    def get_published(self):
+        return self.filter(status=Post.StatusChoice.PUBLISHED)
+
+
 class Post(BaseModel):
 
     class StatusChoice(models.IntegerChoices):
@@ -23,6 +29,8 @@ class Post(BaseModel):
     publish = models.DateTimeField(null=True, blank=True)
     status = models.PositiveSmallIntegerField(
         choices=StatusChoice.choices, default=StatusChoice.DRAFT)
+
+    objects = PostQueryset.as_manager()
 
     class Meta:
         ordering = ('-publish',)

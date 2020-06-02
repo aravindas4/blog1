@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     # apps
     'apps.blog',
     'apps.utils',
+
+    # 3rd party
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -89,6 +92,15 @@ DATABASES = {
         'HOST': config('DATABASE_HOST'),
         'PORT': config('DATABASE_PORT')
     }
+}
+
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS':
+        'apps.utils.pagination.CustomPageNumberPagination',
+    'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',)
 }
 
 
