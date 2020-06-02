@@ -24,7 +24,6 @@ class CWNModelSerializer(FlexFieldsSerializerMixin, WritableNestedModelSerialize
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
-
         request = self.context.get('request', None)
 
         if request:
