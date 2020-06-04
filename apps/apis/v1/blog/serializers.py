@@ -1,15 +1,15 @@
 from apps.blog.models import Post, User
-from apps.utils.serializers import CWNModelSerializer, BASE_FIELDS, ChoicesField
+from apps.utils.serializers import BaseSerializer, BASE_FIELDS, ChoicesField
 
 
-class UserSerializer(CWNModelSerializer):
+class UserSerializer(BaseSerializer):
 
     class Meta:
         model = User
         fields = '__all__'
 
 
-class PostWriteSerializer(CWNModelSerializer):
+class PostWriteSerializer(BaseSerializer):
     status = ChoicesField(choices=Post.StatusChoice)
 
     class Meta:
