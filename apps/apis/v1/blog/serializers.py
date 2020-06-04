@@ -18,7 +18,7 @@ class PostWriteSerializer(CWNModelSerializer):
 
 
 class PostReadSerializer(PostWriteSerializer):
-    user = UserSerializer()
+    author = UserSerializer()
 
     class Meta:
         model = Post
