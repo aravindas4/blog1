@@ -11,7 +11,7 @@ BASE_FIELDS = (
 )
 
 
-class CWNModelSerializer(FlexFieldsSerializerMixin, WritableNestedModelSerializer):
+class BaseSerializer(FlexFieldsSerializerMixin, WritableNestedModelSerializer):
 
     def create(self, validated_data):
         request = self.context.get('request', None)
