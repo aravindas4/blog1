@@ -30,6 +30,11 @@ class PostQueryset(models.QuerySet):
             uuid=post.uuid).annotate(
             same_tags=models.Count('tags')).order_by('-publish')
 
+    def get_search(self, value):
+        return self.filter(
+            models.Q(title__icontains=value) | models.Q(body__icontains=value)
+        )
+
 
 class Post(BaseModel):
 
