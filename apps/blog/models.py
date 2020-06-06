@@ -3,15 +3,32 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
+from taggit.models import CommonGenericTaggedItemBase, TaggedItemBase
 
 from apps.utils import utils
 from apps.utils.models import BaseModel
+
+
+class UUIDTaggedItem(CommonGenericTaggedItemBase, TaggedItemBase):
+    object_id = models.CharField(
+        max_length=10, verbose_name=_("object ID"), db_index=True)
+
+    class Meta:
+        verbose_name = _("Tag")
+        verbose_name_plural = _("Tags")
 
 
 class PostQueryset(models.QuerySet):
 
     def get_published(self):
         return self.filter(status=Post.StatusChoice.PUBLISHED)
+
+    def get_similar_posts(self, post):
+        return self.filter(
+            tags__in=post.tags.values('id')).exclude(
+            uuid=post.uuid).annotate(
+            same_tags=models.Count('tags')).order_by('-publish')
 
 
 class Post(BaseModel):
@@ -30,6 +47,8 @@ class Post(BaseModel):
     status = models.PositiveSmallIntegerField(
         choices=StatusChoice.choices, default=StatusChoice.DRAFT)
 
+    tags = TaggableManager(through=UUIDTaggedItem)
+
     objects = PostQueryset.as_manager()
 
     class Meta:
@@ -47,6 +66,9 @@ class Post(BaseModel):
             self.publish = timezone.now()
 
         return super().save(*args, **kwargs)
+
+    def get_similar_posts(self):
+        return Post.objects.get_similar_posts(self)
 
 
 class Comment(BaseModel):
