@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from taggit.managers import TaggableManager
 
 from apps.utils import utils
 from apps.utils.models import BaseModel
@@ -29,6 +30,8 @@ class Post(BaseModel):
     publish = models.DateTimeField(null=True, blank=True)
     status = models.PositiveSmallIntegerField(
         choices=StatusChoice.choices, default=StatusChoice.DRAFT)
+
+    tags = TaggableManager()
 
     objects = PostQueryset.as_manager()
 
