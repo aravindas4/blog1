@@ -5,7 +5,7 @@ from apps.blog.models import Post
 class PostFilter(dj_filters.FilterSet):
     year = dj_filters.NumberFilter(field_name='publish__year')
     month = dj_filters.NumberFilter(field_name='publish__month')
-    search = dj_filters.CharFilter(action='searches')
+    search = dj_filters.CharFilter(method='searches')
 
     class Meta:
         model = Post
