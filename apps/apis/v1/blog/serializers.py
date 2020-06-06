@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from taggit_serializer.serializers import (
     TagListSerializerField, TaggitSerializer)
 
@@ -30,6 +31,7 @@ class CommentSerializer(BaseSerializer):
 class PostReadSerializer(PostWriteSerializer):
     author = UserSerializer()
     comments = CommentSerializer(many=True)
+    similar_posts = PostWriteSerializer(source='get_similar_posts', many=True)
 
     class Meta:
         model = blog_models.Post
