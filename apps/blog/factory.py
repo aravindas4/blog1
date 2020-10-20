@@ -29,3 +29,14 @@ class PostFactory(factory.django.DjangoModelFactory):
     publish = fake.date_time_this_decade(
         before_now=True, after_now=False, tzinfo=None).date()
     status = blog_models.Post.StatusChoice.PUBLISHED
+
+
+class CommentFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = 'blog.Comment'
+
+    post = factory.SubFactory(PostFactory)
+    name = fake.word()
+    email = factory.lazy_attribute(
+        lambda obj: f"{slugify(obj.name)}@example.com")
+    body = fake.paragraph()
