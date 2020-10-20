@@ -50,9 +50,11 @@ INSTALLED_APPS = [
     'django_filters',
     'taggit_serializer',
     'taggit',
+    'nplusone.ext.django',
 ]
 
 MIDDLEWARE = [
+    'nplusone.ext.django.NPlusOneMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -103,7 +105,8 @@ REST_FRAMEWORK = {
         'apps.utils.pagination.CustomPageNumberPagination',
     'COERCE_DECIMAL_TO_STRING': False,
     'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',)
+        'django_filters.rest_framework.DjangoFilterBackend',),
+    # "EXCEPTION_HANDLER": "exceptions_hog.exception_handler",
 }
 
 
@@ -152,3 +155,18 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'nplusone': {
+            'handlers': ['console'],
+            'level': 'WARN',
+        },
+    },
+}
