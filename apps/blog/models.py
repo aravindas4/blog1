@@ -1,4 +1,5 @@
 from django.db import models
+from django_fsm import FSMIntegerField
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -49,7 +50,7 @@ class Post(BaseModel):
         related_name='blog_posts')
     body = models.TextField()
     publish = models.DateTimeField(null=True, blank=True)
-    status = models.PositiveSmallIntegerField(
+    status = FSMIntegerField(
         choices=StatusChoice.choices, default=StatusChoice.DRAFT)
 
     tags = TaggableManager(through=UUIDTaggedItem)
