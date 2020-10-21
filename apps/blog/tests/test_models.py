@@ -1,21 +1,27 @@
+import operator
 import pytest
 
 from apps.blog import models as blog_models
 
+timeout = pytest.mark.timeout(1, method='thread')
+
 
 @pytest.mark.django_db
-def test_post_model(post_factory):
+@pytest.mark.parametrize(
+    'opera, value', [
+        (operator.eq, 1),
+        (operator.le, 2),
+        (operator.ge, 0)
+    ]
+)
+def test_post_model(opera, value, post_factory):
     post = post_factory()
-    assert blog_models.Post.objects.count() == 1
-    assert blog_models.Post.objects.count() <= 2
-    assert blog_models.Post.objects.count() >= 0
+    assert opera(blog_models.Post.objects.count(), value)
     assert post.title == str(post)
 
     with pytest.raises(blog_models.Post.DoesNotExist,
                        match='Post matching query does not exist.'):
         blog_models.Post.objects.get(uuid=2345)
-
-    # print('simple print')
 
     assert 0.1 + 0.2 == pytest.approx(0.3)
     assert [0.1 + 0.1, 0.2 + 0.1] == pytest.approx([0.2, 0.3])
@@ -23,6 +29,7 @@ def test_post_model(post_factory):
     assert {"count": blog_models.Post.objects.count()} == pytest.approx(dict(count=blog_models.Post.objects.count()))
 
 
+@pytest.mark.xfail(strict=False)
 @pytest.mark.django_db
 def test_comment_model(comment_factory):
     comment = comment_factory()
