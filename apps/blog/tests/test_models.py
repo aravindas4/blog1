@@ -9,9 +9,9 @@ timeout = pytest.mark.timeout(1, method='thread')
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     'opera, value', [
-        (operator.eq, 1),
-        (operator.le, 2),
-        (operator.ge, 0)
+        pytest.param(operator.eq, 1, id='equal'),
+        pytest.param(operator.le, 2, id='less than'),
+        pytest.param(operator.ge, 0, id='greater than')
     ]
 )
 def test_post_model(opera, value, post_factory):
