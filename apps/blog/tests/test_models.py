@@ -1,4 +1,3 @@
-import operator
 import pytest
 
 from apps.blog import models as blog_models
@@ -7,15 +6,10 @@ timeout = pytest.mark.timeout(1, method='thread')
 
 
 @pytest.mark.django_db
-@pytest.mark.parametrize(
-    'opera, value', [
-        pytest.param(operator.eq, 1, id='equal'),
-        pytest.param(operator.le, 2, id='less than'),
-        pytest.param(operator.ge, 0, id='greater than')
-    ]
-)
-def test_post_model(opera, value, post_factory):
+def test_post_model(operators, post_factory):
     post = post_factory()
+    opera = operators.get('operator')
+    value = operators.get('value')
     assert opera(blog_models.Post.objects.count(), value)
     assert post.title == str(post)
 
@@ -29,7 +23,7 @@ def test_post_model(opera, value, post_factory):
     assert {"count": blog_models.Post.objects.count()} == pytest.approx(dict(count=blog_models.Post.objects.count()))
 
 
-@pytest.mark.xfail(strict=False)
+# @pytest.mark.xfail(strict=False)
 @pytest.mark.django_db
 def test_comment_model(comment_factory):
     comment = comment_factory()

@@ -29,7 +29,7 @@ class PostQueryset(models.QuerySet):
         return self.filter(
             tags__in=post.tags.values('id')).exclude(
             uuid=post.uuid).annotate(
-            same_tags=models.Count('tags')).order_by('-publish')
+            same_tags=models.Count('id')).order_by('-publish')
 
     def get_search(self, value):
         return self.filter(
