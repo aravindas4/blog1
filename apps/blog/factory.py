@@ -30,6 +30,15 @@ class PostFactory(factory.django.DjangoModelFactory):
         before_now=True, after_now=False, tzinfo=None).date()
     status = blog_models.Post.StatusChoice.PUBLISHED
 
+    @factory.post_generation
+    def tags(self, create, extracted, **kwargs):
+        if not create:
+            return
+
+        if extracted:
+            for tag in extracted:
+                self.tags.add(tag)
+
 
 class CommentFactory(factory.django.DjangoModelFactory):
     class Meta:

@@ -7,7 +7,7 @@ timeout = pytest.mark.timeout(1, method='thread')
 
 @pytest.mark.django_db
 def test_post_model(operators, post_factory):
-    post = post_factory()
+    post = post_factory(tags=['xyx'])
     opera = operators.get('operator')
     value = operators.get('value')
     assert opera(blog_models.Post.objects.count(), value)
@@ -21,6 +21,9 @@ def test_post_model(operators, post_factory):
     assert [0.1 + 0.1, 0.2 + 0.1] == pytest.approx([0.2, 0.3])
 
     assert {"count": blog_models.Post.objects.count()} == pytest.approx(dict(count=blog_models.Post.objects.count()))
+
+    post2 = post_factory(tags=['xyx'])
+    assert post.get_similar_posts().exists() is True
 
 
 # @pytest.mark.xfail(strict=False)
