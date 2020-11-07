@@ -1,3 +1,4 @@
+from django.contrib.postgres.search import SearchVector
 from django.db import models
 from django_fsm import FSMIntegerField
 from django.utils import timezone
@@ -32,8 +33,10 @@ class PostQueryset(models.QuerySet):
             same_tags=models.Count('uuid')).order_by('-publish')
 
     def get_search(self, value):
-        return self.filter(
-            models.Q(title__icontains=value) | models.Q(body__icontains=value)
+        return self.annotate(
+            search=SearchVector('title__icontains', 'body__icontains')
+        ).filter(
+            search=value
         )
 
 
