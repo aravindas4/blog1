@@ -25,4 +25,15 @@ def test_post_retrieve(api_client, post_factory):
 
 @pytest.mark.django_db
 def test_post_create(api_client, post_factory):
-    pass
+    post_build = post_factory.build()
+    url = reverse('blog-post-list')
+    post_data = {
+        "title": post_build.title,
+        "author": post_factory().author.pk,
+        "body": post_build.body,
+        "tags": list(list("juu"),),
+        "status": "PUBLISHED"
+    }
+    # print(post_data)
+    response = api_client.post(url, post_data)
+    assert response.status_code == 200

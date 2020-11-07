@@ -20,6 +20,9 @@ class PostWriteSerializer(TaggitSerializer, BaseSerializer):
     class Meta:
         model = blog_models.Post
         exclude = BASE_FIELDS
+        extra_kwargs = {
+            "slug": {"required": False}
+        }
 
 
 class CommentSerializer(BaseSerializer):
