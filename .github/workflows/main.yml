@@ -14,10 +14,10 @@ jobs:
     services:
       db:
         image: postgres:12.3-alpine
-#        env:
-#          DATABASE_NAME=postgres
-#          DATABASE_USER=postgres
-#          DATABASE_PASSWORD=postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: blog
 #        ports:
 #          5432:5432
     steps:
