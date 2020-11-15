@@ -34,6 +34,6 @@ def test_post_create(api_client, post_factory):
         "tags": list(list("juu"),),
         "status": "PUBLISHED"
     }
-    # print(post_data)
     response = api_client.post(url, post_data)
-    assert response.status_code == 200
+    print(response.json())
+    assert response.status_code == 201

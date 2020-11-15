@@ -1,4 +1,5 @@
-from rest_framework import serializers
+import six
+
 from taggit_serializer.serializers import (
     TagListSerializerField, TaggitSerializer)
 
@@ -13,9 +14,25 @@ class UserSerializer(BaseSerializer):
         fields = '__all__'
 
 
+class CustomTagListSerializerField(TagListSerializerField):
+    def to_internal_value(self, value):
+        if isinstance(value, six.string_types):
+            value = value.split(',')
+
+        if not isinstance(value, list):
+            self.fail('not_a_list', input_type=type(value).__name__)
+
+        for s in value:
+            if not isinstance(s, six.string_types):
+                self.fail('not_a_str')
+
+            self.child.run_validation(s)
+        return value
+
+
 class PostWriteSerializer(TaggitSerializer, BaseSerializer):
     status = ChoicesField(choices=blog_models.Post.StatusChoice)
-    tags = TagListSerializerField()
+    tags = CustomTagListSerializerField()
 
     class Meta:
         model = blog_models.Post
