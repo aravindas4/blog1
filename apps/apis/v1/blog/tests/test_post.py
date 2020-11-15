@@ -31,7 +31,7 @@ def test_post_create(api_client, post_factory):
         "title": post_build.title,
         "author": post_factory().author.pk,
         "body": post_build.body,
-        "tags": list(list("juu"),),
+        "tags": post_factory(tags=['ggg', 'kkk']).tags.all(),
         "status": "PUBLISHED"
     }
     response = api_client.post(url, post_data)
