@@ -35,5 +35,4 @@ def test_post_create(api_client, post_factory):
         "status": "PUBLISHED"
     }
     response = api_client.post(url, post_data)
-    print(response.json())
     assert response.status_code == 201
