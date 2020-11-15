@@ -50,6 +50,12 @@ jobs:
           DATABASE_PASSWORD: startmeup
           DATABASE_HOST: localhost
           DATABASE_PORT: 5432
+          EMAIL_HOST: xyz
+          EMAIL_HOST_USER: xdf
+          EMAIL_HOST_PASSWORD: fgfg
+          EMAIL_PORT: 56565656
+          EMAIL_USE_TLS: cghh
+
 #       # Runs a set of commands using the runners shell
 #       - name: Run a multi-line script
 #         run: |
