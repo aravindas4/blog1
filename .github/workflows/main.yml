@@ -47,7 +47,7 @@ jobs:
           ALLOWED_HOSTS: localhost
           DATABASE_NAME: blog
           DATABASE_USER: postgres
-          DATABASE_PASSWORD: startmeup
+          DATABASE_PASSWORD: postgres
           DATABASE_HOST: localhost
           DATABASE_PORT: 5432
           EMAIL_HOST: xyz
