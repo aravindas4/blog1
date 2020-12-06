@@ -1,5 +1,6 @@
 from locust import User, task, between
 
+
 class MyUser(User):
     @task
     def my_task(self):
