@@ -49,8 +49,8 @@ class Post(BaseModel):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE,
-        related_name='blog_posts')
+        User, on_delete=models.CASCADE, related_name='blog_posts'
+    )
     body = models.TextField()
     publish = models.DateTimeField(null=True, blank=True)
     status = FSMIntegerField(
@@ -81,8 +81,9 @@ class Post(BaseModel):
 
 
 class Comment(BaseModel):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE,
-                             related_name='comments')
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='comments'
+    )
     name = models.CharField(max_length=255)
     email = models.EmailField()
     body = models.TextField(blank=True)
