@@ -13,6 +13,11 @@ class PostModelViewSet(ModelViewSet):
     filter_class = blog_filters.PostFilter
 
     def get_queryset(self):
+        self.queryset = self.queryset.select_related(
+            'author'
+        ).prefetch_related(
+            'comments', 'tags', 'author__groups', 'author__user_permissions'
+        )
 
         if self.action in ['list', 'retrieve']:
             return self.queryset.get_published()

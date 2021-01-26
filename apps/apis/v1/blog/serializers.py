@@ -51,7 +51,7 @@ class CommentSerializer(BaseSerializer):
 class PostReadSerializer(PostWriteSerializer):
     author = UserSerializer()
     comments = CommentSerializer(many=True)
-    similar_posts = PostWriteSerializer(source='get_similar_posts', many=True)
+    # similar_posts = PostWriteSerializer(source='get_similar_posts', many=True)
 
     class Meta:
         model = blog_models.Post

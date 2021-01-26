@@ -173,3 +173,8 @@ LOGGING = {
         },
     },
 }
+
+
+if DEBUG:
+    INSTALLED_APPS.append('silk')
+    MIDDLEWARE.append('silk.middleware.SilkyMiddleware')
